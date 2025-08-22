@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniRust Compiler - Advanced Development Environment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>MiniRust</h1>
+                    <span class="logo-subtitle">Advanced Compiler IDE</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-center">
+            <div class="breadcrumb">
+                <span class="breadcrumb-item active">
+                    <i class="fas fa-file-code"></i>
+                    main.rs
+                </span>
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <button class="action-btn" id="compileBtn">
+                <i class="fas fa-play"></i>
+                <span>Compile & Run</span>
+            </button>
+            <div class="status-indicator" id="statusIndicator">
+                <div class="status-dot ready"></div>
+                <span>Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Explorer</span>
+                </div>
+                <div class="file-tree">
+                    <div class="file-item active">
+                        <i class="fas fa-file-code"></i>
+                        <span>main.rs</span>
+                    </div>
+                    <div class="file-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Cargo.toml</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <i class="fas fa-tools"></i>
+                    <span>Compiler Settings</span>
+                </div>
+                <div class="settings-panel">
+                    <div class="setting-item">
+                        <input type="checkbox" id="checkOwnership" checked>
+                        <label for="checkOwnership">Ownership Analysis</label>
+                    </div>
+                    <div class="setting-item">
+                        <input type="checkbox" id="emitLlvm" checked>
+                        <label for="emitLlvm">Generate LLVM IR</label>
+                    </div>
+                    <div class="setting-item">
+                        <input type="checkbox" id="optimizeCode">
+                        <label for="optimizeCode">Enable Optimizations</label>
+                    </div>
+                    <div class="setting-item">
+                        <input type="checkbox" id="emitAsm">
+                        <label for="emitAsm">Generate Assembly</label>
+                    </div>
+                </div>
+                
+                <div class="examples-section">
+                    <div class="section-header">
+                        <i class="fas fa-code"></i>
+                        <span>Examples</span>
+                    </div>
+                    <button class="example-btn" id="loadExample">
+                        <i class="fas fa-folder-plus"></i>
+                        Load Example
+                    </button>
+                    <button class="example-btn" id="clearCode">
+                        <i class="fas fa-trash-alt"></i>
+                        Clear Code
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editor Area -->
+        <div class="editor-container">
+            <div class="editor-header">
+                <div class="editor-tabs">
+                    <div class="editor-tab active">
+                        <i class="fas fa-file-code"></i>
+                        <span>main.rs</span>
+                        <div class="tab-status modified"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="editor-toolbar">
+                <div class="editor-metrics">
+                    <div class="metric-item">
+                        <i class="fas fa-text-width"></i>
+                        <span id="characterCount">0 chars</span>
+                    </div>
+                    <div class="metric-item">
+                        <i class="fas fa-list-ol"></i>
+                        <span id="lineCount">0 lines</span>
+                    </div>
+                    <div class="metric-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="lastCompiled">Never</span>
+                    </div>
+                </div>
+                <div class="performance-indicator">
+                    <span>Performance:</span>
+                    <div class="perf-bar">
+                        <div class="perf-fill" id="perfBar" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="editor-content">
+                <div class="editor-gutter" id="editorGutter">
+                    <div class="line-number current-line">1</div>
+                    <div class="line-number">2</div>
+                    <div class="line-number">3</div>
+                </div>
+                <textarea id="sourceCode" class="code-editor" placeholder="// Welcome to MiniRust Compiler IDE
+// Start typing your Rust code here...
+
+fn main() {
+    let mut x: i32 = 10;
+    let y: i32 = 20;
+    
+    if x < y {
+        x = x + 5;
+        print(x);
+    }
+    
+    let mut i: i32 = 0;
+    while i < 3 {
+        print(i);
+        i = i + 1;
+    }
+}">fn main() {
+    let mut x: i32 = 10;
+    let y: i32 = 20;
+    
+    if x < y {
+        x = x + 5;
+        print(x);
+    }
+    
+    let mut i: i32 = 0;
+    while i < 3 {
+        print(i);
+        i = i + 1;
+    }
+}</textarea>
+                <div class="current-line-highlight" id="currentLineHighlight"></div>
+                <div class="editor-overlay" id="editorOverlay"></div>
+                
+                <!-- Code Completion -->
+                <div class="code-completion" id="codeCompletion" style="display: none;">
+                    <div class="completion-item selected">
+                        <div class="completion-icon"><i class="fas fa-cube"></i></div>
+                        <div class="completion-text">main</div>
+                        <div class="completion-type">fn</div>
+                    </div>
+                    <div class="completion-item">
+                        <div class="completion-icon"><i class="fas fa-variable"></i></div>
+                        <div class="completion-text">mut</div>
+                        <div class="completion-type">keyword</div>
+                    </div>
+                    <div class="completion-item">
+                        <div class="completion-icon"><i class="fas fa-type"></i></div>
+                        <div class="completion-text">i32</div>
+                        <div class="completion-type">type</div>
+                    </div>
+                </div>
+                
+                <!-- Minimap -->
+                <div class="editor-minimap">
+                    <div class="minimap-content" id="minimapContent"></div>
+                    <div class="minimap-viewport" id="minimapViewport"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="output-panel">
+            <!-- Compilation Progress -->
+            <div class="compilation-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <!-- Pipeline Visualization -->
+            <div class="pipeline-visualization" id="pipelineViz">
+                <div class="pipeline-steps">
+                    <div class="pipeline-step">
+                        <div class="step-icon pending" id="lexStep">
+                            <i class="fas fa-list"></i>
+                        </div>
+                        <div class="step-label">Lexer</div>
+                        <div class="step-connector"></div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-icon pending" id="parseStep">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="step-label">Parser</div>
+                        <div class="step-connector"></div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-icon pending" id="semanticStep">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="step-label">Semantic</div>
+                        <div class="step-connector"></div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-icon pending" id="irStep">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="step-label">IR Gen</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Compilation Status Bar -->
+            <div class="compilation-status" id="compilationStatus">
+                <div class="status-info">
+                    <div class="spinner-container d-none" id="compilationSpinner">
+                        <div class="loading-spinner"></div>
+                        <span>Compiling...</span>
+                    </div>
+                    <div class="status-ready" id="statusReady">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Ready to compile</span>
+                    </div>
+                </div>
+                <div class="compilation-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span class="stat-value" id="compileTime">0ms</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-memory"></i>
+                        <span class="stat-value" id="memoryUsage">0KB</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-list"></i>
+                        <span class="stat-value" id="tokenCount">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Tabs -->
+            <div class="output-tabs">
+                <div class="tab-list">
+                    <button class="output-tab active" data-target="tokensTab">
+                        <i class="fas fa-list"></i>
+                        <span>Tokens</span>
+                        <div class="tab-badge" id="tokensBadge"></div>
+                    </button>
+                    <button class="output-tab" data-target="astTab">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>AST</span>
+                        <div class="tab-badge" id="astBadge"></div>
+                    </button>
+                    <button class="output-tab" data-target="semanticTab">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Analysis</span>
+                        <div class="tab-badge" id="semanticBadge"></div>
+                    </button>
+                    <button class="output-tab" data-target="irTab">
+                        <i class="fas fa-microchip"></i>
+                        <span>LLVM IR</span>
+                        <div class="tab-badge" id="irBadge"></div>
+                    </button>
+                    <button class="output-tab" data-target="errorsTab">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Problems</span>
+                        <div class="tab-badge error" id="errorsBadge"></div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Output Content -->
+            <div class="output-content">
+                <!-- Tokens Output -->
+                <div class="output-pane active" id="tokensTab">
+                    <div class="pane-header">
+                        <h3>Lexical Analysis</h3>
+                        <p>Token stream generated from source code</p>
+                    </div>
+                    <div class="code-output">
+                        <pre><code id="tokensOutput"></code></pre>
+                    </div>
+                </div>
+
+                <!-- AST Output -->
+                <div class="output-pane" id="astTab">
+                    <div class="pane-header">
+                        <h3>Abstract Syntax Tree</h3>
+                        <p>Hierarchical representation of program structure</p>
+                    </div>
+                    <div class="code-output">
+                        <pre><code id="astOutput"></code></pre>
+                    </div>
+                </div>
+
+                <!-- Semantic Analysis Output -->
+                <div class="output-pane" id="semanticTab">
+                    <div class="pane-header">
+                        <h3>Semantic Analysis</h3>
+                        <p>Type checking and ownership validation</p>
+                    </div>
+                    <div class="semantic-output">
+                        <div class="analysis-section">
+                            <h4><i class="fas fa-table"></i> Symbol Table</h4>
+                            <div class="code-output">
+                                <pre><code id="symbolTableOutput"></code></pre>
+                            </div>
+                        </div>
+                        <div class="analysis-section">
+                            <h4><i class="fas fa-key"></i> Ownership Analysis</h4>
+                            <div class="code-output">
+                                <pre><code id="ownershipOutput"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LLVM IR Output -->
+                <div class="output-pane" id="irTab">
+                    <div class="pane-header">
+                        <h3>LLVM Intermediate Representation</h3>
+                        <p>Low-level intermediate code for compilation</p>
+                    </div>
+                    <div class="code-output">
+                        <pre><code id="irOutput"></code></pre>
+                    </div>
+                </div>
+
+                <!-- Errors Output -->
+                <div class="output-pane" id="errorsTab">
+                    <div class="pane-header">
+                        <h3>Problems</h3>
+                        <p>Compilation errors and warnings</p>
+                    </div>
+                    <div class="errors-output" id="errorsOutput">
+                        <!-- Dynamic error content will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Status Bar -->
+    <div class="status-bar" id="statusBar">
+        <div class="status-group">
+            <span class="status-item">
+                <i class="fas fa-code"></i>
+                MiniRust
+            </span>
+            <div class="status-separator"></div>
+            <span class="status-item">
+                <i class="fas fa-file-code"></i>
+                UTF-8
+            </span>
+            <div class="status-separator"></div>
+            <span class="status-item" id="selectionInfo">No selection</span>
+        </div>
+        <div class="status-group">
+            <span class="status-item" id="lineColumn">Ln 1, Col 1</span>
+            <div class="status-separator"></div>
+            <span class="status-item" id="compilationState">Ready</span>
+            <div class="status-separator"></div>
+            <span class="shortcuts-trigger" id="shortcutsBtn">
+                <i class="fas fa-keyboard"></i>
+                Shortcuts
+            </span>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Panel -->
+    <div class="shortcuts-panel" id="shortcutsPanel">
+        <div class="shortcuts-header">
+            <h3 class="shortcuts-title">Keyboard Shortcuts</h3>
+            <button class="shortcuts-close" id="shortcutsClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="shortcuts-list">
+            <div class="shortcut-item">
+                <span class="shortcut-description">Compile code</span>
+                <div class="shortcut-keys">
+                    <span class="key">Ctrl</span>
+                    <span class="key">Enter</span>
+                </div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-description">Load example</span>
+                <div class="shortcut-keys">
+                    <span class="key">Ctrl</span>
+                    <span class="key">L</span>
+                </div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-description">Clear code</span>
+                <div class="shortcut-keys">
+                    <span class="key">Ctrl</span>
+                    <span class="key">Shift</span>
+                    <span class="key">K</span>
+                </div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-description">Toggle minimap</span>
+                <div class="shortcut-keys">
+                    <span class="key">Ctrl</span>
+                    <span class="key">M</span>
+                </div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-description">Format code</span>
+                <div class="shortcut-keys">
+                    <span class="key">Ctrl</span>
+                    <span class="key">Shift</span>
+                    <span class="key">F</span>
+                </div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-description">Go to line</span>
+                <div class="shortcut-keys">
+                    <span class="key">Ctrl</span>
+                    <span class="key">G</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="examples/sample_programs.js"></script>
+    <script src="compiler/error_reporter.js"></script>
+    <script src="compiler/lexer.js"></script>
+    <script src="compiler/parser.js"></script>
+    <script src="compiler/semantic.js"></script>
+    <script src="compiler/ir_generator.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -14,7 +14,7 @@
 5. [Visualization & Theme](#visualization--theme)  
 6. [Examples](#examples)  
 7. [Contributing](#contributing)  
-8. [License](#license)  
+
 
 ---
 
